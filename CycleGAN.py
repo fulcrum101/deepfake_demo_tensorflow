@@ -171,7 +171,7 @@ def train_cyclegan(models,
         rand_indexes = np.random.randint(0,
                                              source_size,
                                              size=batch_size)
-        real_source = target_data[rand_indexes]
+        real_source = source_data[rand_indexes]
 
         # Generate a batch of fake target data for real source data
         fake_target = g_target.predict(real_source)
