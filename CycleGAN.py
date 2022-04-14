@@ -26,6 +26,8 @@ def build_cyclegan(shapes,
     :return: (list) 2 generator, 2 discriminator, and 1 adversarial models
     """
     source_shape, target_shape = shapes
+    print(f'{source_shape=}')
+    print(f'{target_shape=}')
     lr = 2e-4
     decay = 6e-8
     gt_name = 'gen_' + target_name
@@ -147,7 +149,8 @@ def train_cyclegan(models,
     save_interval = 2000
     target_size = target_data.shape[0]
     source_size = source_data.shape[0]
-
+    print(f'{source_size=}')
+    print(f'{target_size=}')
     # Whether to use patchgan or not
     if patch > 1:
         d_patch = (patch, patch, 1)
@@ -173,28 +176,21 @@ def train_cyclegan(models,
                                              size=batch_size)
         real_source = source_data[rand_indexes]
 
-        # Generate a batch of fake target data for real source data
+        # Generate a batch of fake target data fr real source data
         fake_target = g_target.predict(real_source)
 
         # Combine real and fake into one batch
         x = np.concatenate((real_target, fake_target))
         # Train the target discriminator using fake/real data
         metrics = d_target.train_on_batch(x, valid_fake)
-        log = '%d: [d_target loss: %f]' % (steps, metrics[0])
+        log = "%d: [d_target loss: %f]" % (steps, metrics[0])
 
-        # Generate a batch of fake source data
-        fake_source  = g_source.predict(real_target)
-        x = np.concatenate((real_source, fake_source))
-        # Train the source discriminator using fake/real data
-        metrics = d_target.train_on_batch(x, valid_fake)
-        log = '%d: [d_target loss: %f]' % (steps, metrics[0])
-
-        # Generate a batch of fake sources data for real target data
+        # Generate a batch of fake source data fr real target data
         fake_source = g_source.predict(real_target)
         x = np.concatenate((real_source, fake_source))
         # Train the source discriminator using fake/real data
         metrics = d_source.train_on_batch(x, valid_fake)
-        log = '%s [d_source loss: %f]' % (log, metrics[0])
+        log = "%s [d_source loss: %f]" % (log, metrics[0])
 
         # Train the adversarial network using forward and backward cycles
         # The generated fake source and target data attempts to trick the discriminators

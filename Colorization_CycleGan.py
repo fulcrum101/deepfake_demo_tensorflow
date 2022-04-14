@@ -25,8 +25,7 @@ def graycifar10_cross_colorcifar10(g_models=None):
     if g_models is not None:
         g_source, g_target = g_models
         test_generator((g_source, g_target),
-                                   (test_source_data, \
-                                    test_target_data),
+                                   (test_source_data, test_target_data),
                                    step=0,
                                    titles=titles,
                                    dirs=dirs,
