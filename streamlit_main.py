@@ -1,10 +1,6 @@
 import streamlit as st
 from PIL import Image
-
 from helper_functions import predict_target
-
-
-
 
 def main():
     st.set_page_config(
