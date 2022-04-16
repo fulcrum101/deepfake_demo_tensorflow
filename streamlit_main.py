@@ -10,7 +10,7 @@ def predict_target(model_f, filename):
     img = tf.io.read_file(filename)
     img = tf.image.decode_image(img, channels=1)
     im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
-    return tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.uint16), model.predict(tf.expand_dims(im, axis=0))
+    return  model.predict(tf.expand_dims(im, axis=0))
 
 
 def main():
@@ -40,18 +40,13 @@ def main():
     col1.image(original_target)
     col2.image(step_target)
     st.subheader('Deepfakes on portraits')
-    col1, col2 = st.columns(2)
-    col1.caption('Original portrait')
-    col2.caption('AI coloured portrait')
-    t_or, t_col = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/alan_turing.png')
-    col1.image(t_or)
-    col2.image(t_col)
-    t_or, t_col = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/albert_einstein.png')
-    col1.image(t_or)
-    col2.image(t_col)
-    t_or, t_col = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/nikola_tesla.png')
-    col1.image(t_or)
-    col2.image(t_col)
+    col1, col2, col3 = st.columns(3)
+    turing = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/alan_turing.png')
+    col1.image(turing)
+    einstein = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/albert_einstein.png')
+    col2.image(einstein)
+    tesla = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/nikola_tesla.png')
+    col3.image(tesla)
 
 
 if __name__ == '__main__':
