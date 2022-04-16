@@ -217,12 +217,5 @@ def load_data(data, titles, filenames, todisplay=100):
 
     return data, shapes
 
-from tensorflow_addons.layers import InstanceNormalization
-def predict_target(model_f, filename):
-    model = tf.keras.models.load_model( model_f, custom_objects={'InstanceNormalization': InstanceNormalization})
-    img = tf.io.read_file(filename)
-    img = tf.image.decode_image(img, channels=1)
-    im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
-    print(f'Shape after reshaping: {im.shape}/{im.dtype}')
-    return im, model.predict(tf.expand_dims(im, axis=0))
+
 
