@@ -9,7 +9,7 @@ def predict_target(model, filename):
     img = tf.image.decode_image(img, channels=1)
     im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
     pred = tf.squeeze(model.predict(tf.expand_dims(im, axis=0)))
-    return tf.io.encode_png(tf.cast(pred, dtype=tf.uint16))
+    return tf.cast(pred, dtype=tf.uint16)
 
 
 def main():
@@ -21,8 +21,7 @@ def main():
     st.title('Deepfake demo')
     st.caption('Created using TensorFlow')
     st.write('This is demonstration of the power of the CycleGAN AKA deepfake technology.')
-    st.write(
-        'NN trained on CIFAR10 dataset provided by [TensorFlow Datasets](https://www.tensorflow.org/datasets/catalog/cifar10?authuser=3).')
+    st.write('NN trained on CIFAR10 dataset provided by [TensorFlow Datasets](https://www.tensorflow.org/datasets/catalog/cifar10?authuser=3).')
     st.write('Used dataset includes 60000 32x32 colour images in 10 classes, with 6000 images per class.')
     st.write('There are 50000 training images and 10000 test images.')
     st.subheader('Training process')
