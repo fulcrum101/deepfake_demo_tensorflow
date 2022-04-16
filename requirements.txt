@@ -1,2 +1,2 @@
-tensorflow=2.8.0
+tensorflow
 tensorflow_addons
