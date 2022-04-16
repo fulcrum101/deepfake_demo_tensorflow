@@ -5,8 +5,7 @@ import tensorflow as tf
 from tensorflow_addons.layers import InstanceNormalization
 
 
-def predict_target(model_f, filename):
-    model = tf.keras.models.load_model(model_f, custom_objects={'InstanceNormalization': InstanceNormalization})
+def predict_target(model, filename):
     img = tf.io.read_file(filename)
     img = tf.image.decode_image(img, channels=1)
     im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
@@ -39,14 +38,27 @@ def main():
     col2.image(step_source)
     col1.image(original_target)
     col2.image(step_target)
-    st.subheader('Deepfakes on portraits')
+
+    model = tf.keras.models.load_model('cyclegan_cifar10-g_target.h5', custom_objects={'InstanceNormalization': InstanceNormalization})
+    st.subheader('Deepfake on portraits')
     col1, col2, col3 = st.columns(3)
-    turing = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/alan_turing.png')
-    col1.image(turing, use_column_width='always')
-    einstein = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/albert_einstein.png')
-    col2.image(einstein, use_column_width='always')
-    tesla = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/nikola_tesla.png')
-    col3.image(tesla, use_column_width='always')
+    turing = predict_target(model, 'portraits/alan_turing.png')
+    col1.image(turing, use_column_width='always', caption='Alan Turing')
+    einstein = predict_target(model, 'portraits/albert_einstein.png')
+    col2.image(einstein, use_column_width='always', caption='Albert Einstein')
+    tesla = predict_target(model, 'portraits/nikola_tesla.png')
+    col3.image(tesla, use_column_width='always', caption='Nikola Tesla')
+
+    st.subheader('Deepfake on custom images')
+    col1, col2, col3 = st.columns(3)
+    img1 = predict_target(model, 'custom_images/1.png')
+    col1.image(img1, use_column_width='always', caption='Tree')
+    img2 = predict_target(model, 'custom_images/2.png')
+    col2.image(img2, use_column_width='always', caption='Starry sky')
+    img3 = predict_target(model, 'custom_images/3.png')
+    col3.image(img3, use_column_width='always', caption='Wave')
+
+
 
 
 if __name__ == '__main__':
