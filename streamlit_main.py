@@ -24,20 +24,25 @@ def main():
     col2.image(step_source)
     col1.image(original_target)
     col2.image(step_target)
+    portraits()
 
 if __name__ == '__main__':
     main()
 
-from functools import cache
 from helper_functions import predict_target
 
-@cache
 def portraits():
     st.subheader('Deepfakes on portraits')
     col1, col2 = st.columns(2)
     col1.caption('Original portrait')
     col2.caption('AI coloured portrait')
-    t_or, t_col = predict_target('cyclegan_cifar10-g_target.h5')
+    t_or, t_col = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/alan_turing.png')
+    col1.image(t_or)
+    col2.image(t_col)
+    t_or, t_col = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/albert_einstein.png')
+    col1.image(t_or)
+    col2.image(t_col)
+    t_or, t_col = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/nikola_tesla.png')
     col1.image(t_or)
     col2.image(t_col)
 
