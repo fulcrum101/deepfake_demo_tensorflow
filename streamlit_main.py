@@ -10,7 +10,7 @@ def predict_target(model_f, filename):
     img = tf.io.read_file(filename)
     img = tf.image.decode_image(img, channels=1)
     im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
-    return  model.predict(tf.expand_dims(im, axis=0))
+    return tf.squeeze(model.predict(tf.expand_dims(im, axis=0)))
 
 
 def main():
