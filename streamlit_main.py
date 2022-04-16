@@ -49,9 +49,15 @@ def main():
     col2.image(einstein, use_column_width='always', caption='Albert Einstein')
     tesla = predict_target(model, 'portraits/nikola_tesla.png')
     col3.image(tesla, use_column_width='always', caption='Nikola Tesla')
-    st.subheader('Deepfake on custom images')
-    # col1, col2, col3 = st.columns(3)
 
+    st.subheader('Deepfake on custom images')
+    col1, col2, col3 = st.columns(3)
+    img1 = predict_target(model, 'custom_images/1.png')
+    col1.image(img1, use_column_width='always', caption='Tree')
+    img2 = predict_target(model, 'custom_images/1.png')
+    col2.image(img2, use_column_width='always', caption='Starry night')
+    img3 = predict_target(model, 'custom_images/1.png')
+    col3.image(img3, use_column_width='always', caption='Wave')
 
 if __name__ == '__main__':
     main()
