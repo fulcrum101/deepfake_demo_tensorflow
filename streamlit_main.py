@@ -42,11 +42,11 @@ def main():
     st.subheader('Deepfakes on portraits')
     col1, col2, col3 = st.columns(3)
     turing = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/alan_turing.png')
-    col1.image(turing)
+    col1.image(turing, use_column_width='auto')
     einstein = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/albert_einstein.png')
-    col2.image(einstein)
+    col2.image(einstein, use_column_width='auto')
     tesla = predict_target('cyclegan_cifar10-g_target.h5', 'portraits/nikola_tesla.png')
-    col3.image(tesla)
+    col3.image(tesla, use_column_width='auto')
 
 
 if __name__ == '__main__':
