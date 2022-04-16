@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import Image
+from PIL import Image, ImageOps
 import tensorflow as tf
 from tensorflow_addons.layers import InstanceNormalization
 
@@ -9,7 +9,7 @@ def predict_target(model, filename):
     img = tf.image.decode_image(img, channels=1)
     im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
     pred = tf.squeeze(model.predict(tf.expand_dims(im, axis=0)))
-    return pred.numpy()
+    return ImageOps.invert(pred.numpy())
 
 
 def main():
