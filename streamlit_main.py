@@ -54,9 +54,9 @@ def main():
     col1, col2, col3 = st.columns(3)
     img1 = predict_target(model, 'custom_images/1.png')
     col1.image(img1, use_column_width='always', caption='Tree')
-    img2 = predict_target(model, 'custom_images/1.png')
+    img2 = predict_target(model, 'custom_images/2.png')
     col2.image(img2, use_column_width='always', caption='Starry night')
-    img3 = predict_target(model, 'custom_images/1.png')
+    img3 = predict_target(model, 'custom_images/3.png')
     col3.image(img3, use_column_width='always', caption='Wave')
 
 if __name__ == '__main__':
