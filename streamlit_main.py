@@ -9,7 +9,7 @@ def predict_target(model, filename):
     img = tf.image.decode_image(img, channels=1)
     im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
     pred = tf.squeeze(model.predict(tf.expand_dims(im, axis=0)))
-    return tf.cast(pred, dtype=tf.uint16).numpy()
+    return pred.numpy()
 
 
 def main():
@@ -44,11 +44,11 @@ def main():
     st.subheader('Deepfake on portraits')
     col1, col2, col3 = st.columns(3)
     turing = predict_target(model, 'portraits/alan_turing.png')
-    col1.image(turing, use_column_width='always')#, caption='Alan Turing')
+    col1.image(turing, use_column_width='always', caption='Alan Turing')
     einstein = predict_target(model, 'portraits/albert_einstein.png')
-    col2.image(einstein, use_column_width='always')#, caption='Albert Einstein')
+    col2.image(einstein, use_column_width='always', caption='Albert Einstein')
     tesla = predict_target(model, 'portraits/nikola_tesla.png')
-    col3.image(tesla, use_column_width='always')#, caption='Nikola Tesla')
+    col3.image(tesla, use_column_width='always', caption='Nikola Tesla')
     st.subheader('Deepfake on custom images')
     # col1, col2, col3 = st.columns(3)
 
