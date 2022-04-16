@@ -14,9 +14,10 @@ def main():
     st.write('There are 50000 training images and 10000 test images.')
     col1, col2 = st.columns(2)
     st.subheader('Training process')
+    step_num = st.slider('Step number', 2000, 100000, step=2000)
     original_source = Image.open('cifar10_source-3p/reconstructed_source.png')
     original_target = Image.open('cifar10_target-3p/reconstructed_target.png')
-    step_num = st.slider('Step number', 2000, 100000, 2000)
+
     step_source = Image.open(f'cifar10_source-3p/{str(step_num).zfill(6)}.png')
     step_target = Image.open(f'cifar10_target-3p/{str(step_num).zfill(6)}.png')
     col1.image(original_source)
@@ -26,3 +27,17 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+from functools import cache
+from helper_functions import predict_target
+
+@cache
+def portraits():
+    st.subheader('Deepfakes on portraits')
+    col1, col2 = st.columns(2)
+    col1.caption('Original portrait')
+    col2.caption('AI coloured portrait')
+    t_or, t_col = predict_target('cyclegan_cifar10-g_target.h5')
+    col1.image(t_or)
+    col2.image(t_col)
+

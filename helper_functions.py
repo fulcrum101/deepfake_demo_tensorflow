@@ -5,6 +5,7 @@ import os
 import numpy as np
 import math
 
+
 def load_data_cifar():
     # load CIFAR10 data
     (target_data, _), (test_target_data, _) = cifar10.load_data()
@@ -215,3 +216,13 @@ def load_data(data, titles, filenames, todisplay=100):
     shapes = (source_shape, target_shape)
 
     return data, shapes
+
+from tensorflow_addons.layers import InstanceNormalization
+def predict_target(model_f, filename):
+    model = tf.keras.models.load_model( model_f, custom_objects={'InstanceNormalization': InstanceNormalization})
+    img = tf.io.read_file(filename)
+    img = tf.image.decode_image(img, channels=1)
+    im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
+    print(f'Shape after reshaping: {im.shape}/{im.dtype}')
+    return im, model.predict(tf.expand_dims(im, axis=0))
+
