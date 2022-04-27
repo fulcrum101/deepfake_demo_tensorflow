@@ -4,7 +4,7 @@ import tensorflow as tf
 from tensorflow_addons.layers import InstanceNormalization
 
 
-def predict_target(model, img, token=True):
+def predict_target(model, img, token=False):
     if token:
         img = tf.io.read_file(img)
     img = tf.image.decode_image(img, channels=1)
@@ -48,26 +48,32 @@ def main():
 
     st.subheader('Deepfake on custom images')
     col1, col2, col3 = st.columns(3)
-    img1 = predict_target(model, 'custom_images/1.png')
-    col1.image(img1, use_column_width='always', caption='Tree')
-    img2 = predict_target(model, 'custom_images/2.png')
-    col2.image(img2, use_column_width='always', caption='Starry night')
-    img3 = predict_target(model, 'custom_images/3.png')
-    col3.image(img3, use_column_width='always', caption='Wave')
+    orig1, img1 = predict_target(model, 'custom_images/1.png')
+    col1.image(orig1, use_column_width='always', caption='Tree - original' )
+    col1.image(img1, use_column_width='always', caption='Tree - coloured')
+    orig2, img2 = predict_target(model, 'custom_images/2.png')
+    col2.image(orig2, use_column_width='always', caption='Starry night - original')
+    col2.image(img2, use_column_width='always', caption='Starry night - coloured')
+    orig3, img3 = predict_target(model, 'custom_images/3.png')
+    col3.image(orig3, use_column_width='always', caption='Wave - original')
+    col3.image(img3, use_column_width='always', caption='Wave - coloured')
 
     st.subheader('Fail cases - NN on portraits')
     col1, col2, col3 = st.columns(3)
-    turing = predict_target(model, 'portraits/alan_turing.png')
-    col1.image(turing, use_column_width='always', caption='Alan Turing')
-    einstein = predict_target(model, 'portraits/albert_einstein.png')
-    col2.image(einstein, use_column_width='always', caption='Albert Einstein')
-    tesla = predict_target(model, 'portraits/nikola_tesla.png')
-    col3.image(tesla, use_column_width='always', caption='Nikola Tesla')
+    ortur, turing = predict_target(model, 'portraits/alan_turing.png')
+    col1.image(ortur, use_column_width='always', caption='Alan Turing - original')
+    col1.image(turing, use_column_width='always', caption='Alan Turing - coloured')
+    orein, einstein = predict_target(model, 'portraits/albert_einstein.png')
+    col2.image(orein, use_column_width='always', caption='Albert Einstein - original')
+    col2.image(einstein, use_column_width='always', caption='Albert Einstein - coloured')
+    ortes, tesla = predict_target(model, 'portraits/nikola_tesla.png')
+    col3.image(ortes, use_column_width='always', caption='Nikola Tesla - original')
+    col3.image(tesla, use_column_width='always', caption='Nikola Tesla- coloured')
 
     st.subheader('Try your own B&W images')
     file = st.file_uploader(label='Your own B&W image')
     if file is not None:
-        original, pred = predict_target(model, file.getvalue(), token=False)
+        original, pred = predict_target(model, file.getvalue())
         print(original, original.dtype)
         col1, col2 = st.columns(2)
         col1.image(original, use_column_width='always', caption='Your original B&W image')
