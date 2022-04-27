@@ -68,6 +68,7 @@ def main():
     file = st.file_uploader(label='Your own B&W image')
     if file is not None:
         original, pred = predict_target(model, file.getvalue(), token=False)
+        print(original, original.dtype)
         col1, col2 = st.columns(2)
         col1.image(original, use_column_width='always', caption='Your original B&W image')
         col2.image(pred, use_column_width='always', caption='AI coloured image')
