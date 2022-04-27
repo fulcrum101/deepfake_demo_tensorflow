@@ -4,13 +4,16 @@ import tensorflow as tf
 from tensorflow_addons.layers import InstanceNormalization
 
 
-def predict_target(model, filename):
-    img = tf.io.read_file(filename)
+def predict_target(model, img, token=True):
+    if token:
+        img = tf.io.read_file(img)
     img = tf.image.decode_image(img, channels=1)
     im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
     pred = tf.squeeze(model.predict(tf.expand_dims(im, axis=0)))
     pred = 1 - pred
-    return pred.numpy()
+    if token:
+        return pred.numpy()
+    return im.numpy, pred.numpy()
 
 
 def main():
@@ -59,6 +62,14 @@ def main():
     col2.image(img2, use_column_width='always', caption='Starry night')
     img3 = predict_target(model, 'custom_images/3.png')
     col3.image(img3, use_column_width='always', caption='Wave')
+
+    st.subheader('Try your own B&W images')
+    file = st.file_uploader()
+    original, pred = predict_target(model, file.getvalue(), token=False)
+    col1, col2 = st.columns(2)
+    col1.image(original, use_column_width='always', caption='Your original B&W image')
+    col2.image(pred, use_column_width='always', caption='AI coloured image')
+
 
 if __name__ == '__main__':
     main()
