@@ -10,7 +10,7 @@ def predict_target(model, img, token=True):
     img = tf.image.decode_image(img, channels=1)
     im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
     pred = tf.squeeze(model.predict(tf.expand_dims(im, axis=0)))
-    pred = 1 - pred
+    #pred = 1 - pred
     if token:
         return pred.numpy()
     return im.numpy()/255., pred.numpy()
