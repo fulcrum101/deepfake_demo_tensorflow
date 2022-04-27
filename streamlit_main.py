@@ -4,15 +4,13 @@ import tensorflow as tf
 from tensorflow_addons.layers import InstanceNormalization
 
 
-def predict_target(model, img, token=False):
+def predict_target(model, img, token=True):
     if token:
         img = tf.io.read_file(img)
     img = tf.image.decode_image(img, channels=1)
     im = tf.cast(tf.image.resize(img, size=[32, 32]), dtype=tf.float32)
     pred = tf.squeeze(model.predict(tf.expand_dims(im, axis=0)))
     pred = 1 - pred
-    if token:
-        return pred.numpy()
     return im.numpy()/255., pred.numpy()
 
 
@@ -73,8 +71,7 @@ def main():
     st.subheader('Try your own B&W images')
     file = st.file_uploader(label='Your own B&W image')
     if file is not None:
-        original, pred = predict_target(model, file.getvalue())
-        print(original, original.dtype)
+        original, pred = predict_target(model, file.getvalue(), token=False)
         col1, col2 = st.columns(2)
         col1.image(original, use_column_width='always', caption='Your original B&W image')
         col2.image(pred, use_column_width='always', caption='AI coloured image')
