@@ -45,14 +45,6 @@ def main():
 
     model = tf.keras.models.load_model('cyclegan_cifar10-g_target.h5',
                                        custom_objects={'InstanceNormalization': InstanceNormalization})
-    st.subheader('Deepfake on portraits')
-    col1, col2, col3 = st.columns(3)
-    turing = predict_target(model, 'portraits/alan_turing.png')
-    col1.image(turing, use_column_width='always', caption='Alan Turing')
-    einstein = predict_target(model, 'portraits/albert_einstein.png')
-    col2.image(einstein, use_column_width='always', caption='Albert Einstein')
-    tesla = predict_target(model, 'portraits/nikola_tesla.png')
-    col3.image(tesla, use_column_width='always', caption='Nikola Tesla')
 
     st.subheader('Deepfake on custom images')
     col1, col2, col3 = st.columns(3)
@@ -63,8 +55,17 @@ def main():
     img3 = predict_target(model, 'custom_images/3.png')
     col3.image(img3, use_column_width='always', caption='Wave')
 
+    st.subheader('Fail cases - NN on portraits')
+    col1, col2, col3 = st.columns(3)
+    turing = predict_target(model, 'portraits/alan_turing.png')
+    col1.image(turing, use_column_width='always', caption='Alan Turing')
+    einstein = predict_target(model, 'portraits/albert_einstein.png')
+    col2.image(einstein, use_column_width='always', caption='Albert Einstein')
+    tesla = predict_target(model, 'portraits/nikola_tesla.png')
+    col3.image(tesla, use_column_width='always', caption='Nikola Tesla')
+
     st.subheader('Try your own B&W images')
-    file = st.file_uploader()
+    file = st.file_uploader(label='Your own B&W image')
     original, pred = predict_target(model, file.getvalue(), token=False)
     col1, col2 = st.columns(2)
     col1.image(original, use_column_width='always', caption='Your original B&W image')
