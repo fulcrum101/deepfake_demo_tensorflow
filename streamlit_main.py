@@ -13,7 +13,7 @@ def predict_target(model, img, token=True):
     pred = 1 - pred
     if token:
         return pred.numpy()
-    return im.numpy(), pred.numpy()
+    return im.numpy()/255., pred.numpy()
 
 
 def main():
